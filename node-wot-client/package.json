@@ -1,0 +1,32 @@
+{
+  "name": "node-wot-client",
+  "devDependencies": {
+    "@types/express-oauth-server": "^2.0.2",
+    "@types/node": "16.4.13",
+    "express-oauth-server": "^2.0.0",
+    "prettier": "^2.3.2",
+    "ts-node": "10.1.0",
+    "typescript": "4.4.3",
+    "typescript-standard": "^0.3.36",
+    "wot-thing-description-types": "^1.1.0-20-July-2022",
+    "wot-typescript-definitions": "0.8.0-SNAPSHOT.23",
+    "cors": "^2.8.5"
+  },
+  "dependencies": {
+    "@node-wot/binding-coap": "0.8.0",
+    "@node-wot/binding-file": "0.8.0",
+    "@node-wot/binding-http": "0.8.0",
+    "@node-wot/core": "0.8.0",
+    "@node-wot/td-tools": "0.8.0",
+    "rxjs": "5.5.11",
+    "ajv": "^8.11.0",
+    "ajv-formats": "^2.1.1",
+    "chai": "^4.2.0",
+    "jest": "^26.6.3",
+    "json-schema-faker": "^0.5.0-rcv.30",
+    "mocha": "^8.2.1"
+  },
+  "scripts": {
+    "build": "tsc -b"
+  }
+}
