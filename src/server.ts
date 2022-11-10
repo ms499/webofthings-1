@@ -10,8 +10,8 @@ import * as http from 'http';
 import * as https from 'https';
 import Thing from './things';
 import {cryptoUsingMD5, cryptoUsingSHA256, digestAuth, parseAuthenticationInfo }  from './securityScheme/digest';
+
 const fs = require("fs");
-let crypto = require('crypto');
 
 const actionEmitter = require("./actionHandler")
 const credential_digest = {
@@ -250,11 +250,11 @@ export class WoTHttpServer {
                         } else  {        
                         hash = cryptoUsingSHA256(credential_digest.realm);
                         }
-                        if (!request.headers.authorization) {
+                        if (!authValue.authorization) {
                             this.authenticateUser(response, hash);
                             return ;
                         }
-                        authInfo = request.headers.authorization.replace(/^Digest /, '');
+                        authInfo = authValue.authorization.replace(/^Digest /, '');
                         authInfo = parseAuthenticationInfo(authInfo);
                         if (authInfo.username !== credential_digest.userName) {
                             this.authenticateUser(response, hash);
@@ -370,14 +370,7 @@ export class WoTHttpServer {
         //resp.end();
 
     };
-    // Digest Authentication
-    cryptoUsingMD5(data: any) {
-        return crypto.createHash('md5').update(data).digest('hex');
-    }
 
-    cryptoUsingSHA256(data: any) {
-        return crypto.createHash('sha256').update(data).digest('base64');
-    }
 
     authenticateUser(res: express.Response, hash: string) {
         res.writeHead(401, {
@@ -387,16 +380,6 @@ export class WoTHttpServer {
         res.end('Authorization is needed.');
     }
 
-    parseAuthenticationInfo(authData: any) {
-        let authenticationObj: any = {};
-        authData.split(', ').forEach(function (d: any) {
-            d = d.split('=');
-
-            authenticationObj[d[0]] = d[1].replace(/"/g, '');
-        });
-        console.log(JSON.stringify(authenticationObj));
-        return authenticationObj;
-    }
 
     start(): Promise<void> {
         return new Promise((resolve) => {

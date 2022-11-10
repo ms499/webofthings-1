@@ -1,5 +1,6 @@
 {
-  "name": "webofthing",
+  "name": "webofthing",  
+  "license": "MIT",
   "scripts": {
     "build": "tsc -p ."
   },

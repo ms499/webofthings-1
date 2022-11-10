@@ -48,6 +48,7 @@ axios.get('https://localhost:8080/mygardenthing', { httpsAgent: agent }).then((r
 }).catch((e) => {
     console.error(e)
 });
+
 function readPropertyCall(td, property) {
     let digestResponse = digestAuth(DATA, 'GET', algo, authInfo)
     let header = 'Digest username="' + DATA.username + '", realm="' + DATA.realm + '", nonce="' + authInfo.nonce +
@@ -79,8 +80,6 @@ function writePropertyCall(td, property, payload) {
         console.error(e)
     })
 }
-
-
 
 function invokeActionCall(td, action, payload) {
     let digestResponse = digestAuth(DATA, 'POST', algo, authInfo)
