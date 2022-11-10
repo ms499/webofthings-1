@@ -9,7 +9,7 @@ import express from 'express';
 import * as http from 'http';
 import * as https from 'https';
 import Thing from './things';
-
+import {cryptoUsingMD5, cryptoUsingSHA256, digestAuth, parseAuthenticationInfo }  from './securityScheme/digest';
 const fs = require("fs");
 let crypto = require('crypto');
 
@@ -243,7 +243,29 @@ export class WoTHttpServer {
                         break
                     }
                     case 'digest': {
+                        let algorithm ='MD5'
                         let authInfo: any, hash;
+                        if (algorithm == "MD5") {
+                            hash = cryptoUsingMD5(credential_digest.realm);
+                        } else  {        
+                        hash = cryptoUsingSHA256(credential_digest.realm);
+                        }
+                        if (!request.headers.authorization) {
+                            this.authenticateUser(response, hash);
+                            return ;
+                        }
+                        authInfo = request.headers.authorization.replace(/^Digest /, '');
+                        authInfo = parseAuthenticationInfo(authInfo);
+                        if (authInfo.username !== credential_digest.userName) {
+                            this.authenticateUser(response, hash);
+                            return ;
+                        }
+                        let digestResp = digestAuth(credential_digest, request.method, algorithm, authInfo)
+                        if (authInfo.response !== digestResp) {
+                            this.authenticateUser(response, hash);
+                            return ;
+                        }
+                        /*let authInfo: any, hash;
                         let digestAuthObject: any = {};
                         hash = this.cryptoUsingMD5(credential_digest.realm);
                         if (!request.headers.authorization) {
@@ -252,11 +274,11 @@ export class WoTHttpServer {
                         }
                         authInfo = request.headers.authorization.replace(/^Digest /, '');
                         authInfo = this.parseAuthenticationInfo(authInfo);
-                        if (authInfo.username !== credentials.userName) {
+                        if (authInfo.username !== credential_digest.userName) {
                             this.authenticateUser(response, hash);
                             return;
                         }
-                        digestAuthObject.ha1 = this.cryptoUsingMD5(authInfo.username + ':' + credential_digest.realm + ':' + credentials.password);
+                        digestAuthObject.ha1 = this.cryptoUsingMD5(authInfo.username + ':' + credential_digest.realm + ':' + credential_digest.password);
                         digestAuthObject.ha2 = this.cryptoUsingMD5(request.method + ':' + authInfo.uri);
                         var resp = this.cryptoUsingMD5([digestAuthObject.ha1, authInfo.nonce, authInfo.nc, authInfo.cnonce, authInfo.qop, digestAuthObject.ha2].join(':'));
 
@@ -264,7 +286,7 @@ export class WoTHttpServer {
                         if (authInfo.response !== digestAuthObject.response) {
                             this.authenticateUser(response, hash);
                             return;
-                        }
+                        }*/
                         break;
                     }
                     case 'apikey': {
