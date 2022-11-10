@@ -1,6 +1,8 @@
 
 import Thing from './things';
 import Property from './property'
+import Action from './action';
+import Event from './event';
 
 class ThingsConsume extends Thing {
     constructor(td:any) {
@@ -35,7 +37,9 @@ class ThingsConsume extends Thing {
                 Object.entries(td.actions[action]).forEach(([key, value]) => {
                     metaData[key] = value
                 })
-                this.addAction(action, metaData);
+                this.addAction(
+                    new Action (action, metaData)
+                );
             }
         }
         if (Object.keys(td.events).length > 0) {
@@ -45,7 +49,9 @@ class ThingsConsume extends Thing {
                 Object.entries(td.events[event]).forEach(([key, value]) => {
                     metaData[key] = value
                 })
-                this.addEvent(event, metaData);
+                this.addEvent(
+                    new Event (event, metaData)
+                );
             }
         }
     }
