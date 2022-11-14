@@ -1,6 +1,6 @@
-# Flexibility of Things DEscription compared with node-wot implementation
+# Flexibility of Things Description compared with node-wot implementation
 
-Comparison of the flexibility of the security scheme described in the Things DEscription w.r.t. the node wot implementation.
+Comparison of the flexibility of the security scheme described in the Things Description w.r.t. the node wot implementation.
 - Combo and Auto Security scheme is not implemented.
 ---
 **Suggestion**
