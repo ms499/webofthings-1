@@ -29,7 +29,8 @@ In Things Description, Basic has 2 vocabulary terms namely **name** and **in**.
 
 - In node-wot, it is implemented for producer and consumer(HTTP protocol). [ref](https://github.com/eclipse/thingweb.node-wot/tree/master/packages/binding-http#server-example)
 
-- In node-wot, it is implemented for consumer (MQTT). <br />
+- In node-wot, it is implemented for consumer (MQTT).<br />
+
 ![mqtt-client.ts line:138 ](img/mqtt.png) 
 
 ---
@@ -45,10 +46,10 @@ In Things Description, Digest has 3 vocabulary terms namely **qop**, **name** an
 
 ---
 **Suggestions**
-- There should be 1 parameter in Things Description which should be used to give the flexibility to chose the algorithm like MD5, SHA256 etc like it is done for bearer token scheme [ref](https://www.rfc-editor.org/rfc/rfc7616#section-3.7)
+- There should be 1 parameter in Things Description which should be used to give the flexibility to chose the algorithm like MD5, SHA256 etc like it is done for bearer token scheme. [ref](https://www.rfc-editor.org/rfc/rfc7616#section-3.7)
 - There should be some support for negotiations of parameters like algorithm, nonce, opaque parameter which is used to calculate the final response value.
 - Things Description can have some optional parameters like opaque and realm which are used to calculate the digest value and can be static(based on the requirement of the application). 
-- Section 3.4 of rfc7616 states all the necessary rules required for the Authorization header [ref](https://www.rfc-editor.org/rfc/rfc7616#section-3.4)
+- Section 3.4 of rfc7616 states all the necessary rules required for the Authorization header. [ref](https://www.rfc-editor.org/rfc/rfc7616#section-3.4)
 ---
 
 
@@ -56,7 +57,8 @@ In Things Description, Digest has 3 vocabulary terms namely **qop**, **name** an
 
 In Things Description, Basic has 2 vocabulary terms namely **name** and **in**.
 
-- The term **name:authorization** is hard coded in the code and hence does not offer the flexibility for the application/user to define their own name.[ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/credential.ts#L49)
+- The term **name:authorization** is hard coded in the code and hence does not offer the flexibility for the application/user to define their own name. [ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/credential.ts#L49)
+
 - API key Security scheme only support **in:header**. [ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/credential.ts#L88)<br />
 
 ![credentials.ts line:102 ](img/api.png)  
@@ -75,27 +77,26 @@ In Things Description, Basic has 2 vocabulary terms namely **name** and **in**.
 
 In Things Description, Basic has 5 vocabulary terms namely **authorization**, **algo**, **format**, **name** and **in**.
 
-- The term **name:authorization** is hard coded in the code and hence does not offer the flexibility for the application/user to define their own name.[ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/credential.ts#L77)
+- The term **name:authorization** is hard coded in the code and hence does not offer the flexibility for the application/user to define their own name. [ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/credential.ts#L77)
 
-- Bearer Security scheme only support **in:header** as it uses the basic-auth library which extract the credentials from the header.[ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/credential.ts#L81) <br />
+- Bearer Security scheme only support **in:header** as it uses the basic-auth library which extract the credentials from the header. [ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/credential.ts#L81)<br />
 
 ![credentials.ts line:62 ](img/bearer.png)  
-[Reference](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/credential.ts#L62)
 
 - In node-wot, it is implemented for producer and consumer(HTTP protocol). [ref](https://github.com/eclipse/thingweb.node-wot/tree/master/packages/binding-http#server-example)
 
-- Token evaluation is not done like CWT token is created in a certain way and can be verified by the producer to check if it is coming from an authenticated consumer.[ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/http-server.ts#L453)
+- Token evaluation is not done like CWT token is created in a certain way and can be verified by the producer to check if it is coming from an authenticated consumer. [ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/http-server.ts#L453)
 
-- In node-wot, only comparison of token is done. Parameters like algo, authorization, format is not been implemented.[ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/http-server.ts#L453)
+- In node-wot, only comparison of token is done. Parameters like algo, authorization, format is not been implemented. [ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/http-server.ts#L453)<br />
+
 ![http-server.ts line:453 ](img/bearer_token.png)  
 
 ## PSKSecurityScheme
 
 In Things Description, Basic has 1 vocabulary terms namely **identity**.
 
-- In node-wot, it is implemented for consumer(CoAP protocol). [ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-coap/src/coaps-client.ts#L148)
+- In node-wot, it is implemented for consumer(CoAP protocol). [ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-coap/src/coaps-client.ts#L148)<br />
 
-- In node-wot, it is implemented for consumer (MQTT). <br />
 ![coaps-client.ts line:148 ](img/psk.png) 
 
 
@@ -106,9 +107,9 @@ In Things Description, Basic has 5 vocabulary terms namely **authorization**, **
 
 - Client credential and Resource Owner credential flow is only implemented in node-wot. [ref](https://github.com/eclipse/thingweb.node-wot/tree/master/packages/binding-http#oauth20)
 
-- For some server, the parameter like clientId, clientSecret has to be sent in body for client credential flow which is not implemented yet.[ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/oauth-manager.ts#L86)
+- For some server, the parameter like clientId, clientSecret has to be sent in body for client credential flow which is not implemented yet. [ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/oauth-manager.ts#L86)
 
-- Error response is not done completely.[ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/http-server.ts#L445)
+- Error response is not done completely. [ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/http-server.ts#L445)
 
 ---
 **Suggestions**
