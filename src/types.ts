@@ -1,3 +1,5 @@
+
+import express from 'express';
 export type PrimitiveJsonType =
   | 'null'
   | 'boolean'
@@ -20,4 +22,11 @@ export interface Form {
 export interface SecurityScheme {
   scheme: string;
   in: string
+}
+
+export interface responseArray {
+  eventName: string;
+  response: express.Response | {
+   send: () => void
+  }
 }

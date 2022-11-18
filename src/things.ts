@@ -159,12 +159,12 @@ class Thing {
    * Set a property value.
    */
   setWriteProperty(propertyName: string, value: AnyType): void {
-    const prop = this.findProperty(propertyName);
+    const property = this.findProperty(propertyName);
     //console.log(prop)
-    if (!prop) {
+    if (!property) {
       return;
     }
-    prop.setValue(value);
+    property.setValue(value);
   }
 
 

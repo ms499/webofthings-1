@@ -4,16 +4,27 @@
 * http and https configurable 
 * 
 */
+
+
 import bodyParser from 'body-parser';
 import express from 'express';
 import * as http from 'http';
 import * as https from 'https';
 import Thing from './things';
-import {cryptoUsingMD5, cryptoUsingSHA256, digestAuth, parseAuthenticationInfo }  from './securityScheme/digest';
-
+import { responseArray } from './types';
+import { cryptoUsingMD5, cryptoUsingSHA256, digestAuth, parseAuthenticationInfo } from './securityScheme/digest';
+ 
+var messageBus =require('./eventHandler')
 const fs = require("fs");
-
 const actionEmitter = require("./actionHandler")
+
+/*var EventEmitter = require('events').EventEmitter
+var messageBus = new EventEmitter()*/
+//var responseArray: express.Response<any, Record<string, any>>[] | { send: () => void; }[] = []
+
+var responseList: responseArray[]
+responseList = []
+
 const credential_digest = {
     userName: "iot",
     password: "gardenThings",
@@ -55,7 +66,14 @@ abstract class BaseHandler {
     getThing(): Thing | null {
         return this.things.getThing();
     }
+
+    publish(event: string, data: any) {
+        console.log('Publish to the event:' + event)
+        //messageBus.emit(event, data)
+        messageBus.emitEvent.emit(event, data)
+    }
 }
+
 
 
 /**
@@ -140,37 +158,44 @@ class ActionHandler extends BaseHandler {
     }
 
 }
-
+let count= 1
 /**
  * Event request handler. TODO: Not done yet
  */
-class EventHandler extends BaseHandler {
+class EventHandler extends BaseHandler  {
 
     get(req: express.Request, res: express.Response): void {
-        console.log('Event get')
+        //console.log('Event get')
         const thing = this.getThing();
         if (thing === null) {
             res.status(400).end();
             return;
         }
-
         const eventName = req.params.eventName;
         console.log(eventName)
-        //responses[eventName].push(res);
-        /*const handler = function(eventName: any) {
-            //clearTimeout(timer);
-            console.log('event', eventName);
-            res.status(201);
-            res.end( JSON.stringify(eventName));
-         };*/
-        // eventEmitter.register(eventName, handler);
-        //thing.addEventSubscriber(eventName, ws);
-        //console.log(thing.getEventDescriptions(eventName) + " " + eventName)
-        //console.log(thing.getEventDescriptions(eventName))
-        //res.json(thing.getEventDescriptions(eventName));
-        // res.status(200).end();
+        
+        responseList.push({
+            'eventName': eventName,
+            'response': res
+         })
+        var addMessageListener = function () {
+            //console.log('function call')
+            messageBus.emitEvent.once(eventName, function () {
+                //console.log('sending data')
+                var filteredArray = responseList.filter(responseList => responseList.eventName === eventName);
+                  filteredArray.forEach(val=> val.response.send())
+            })
+        }
+        addMessageListener()
+        // send the 1st response to establish the connection
+        if(count == 1) {
+            count = count+1
+            res.send()
+        }
+        //console.log('sequence 1')
     }
 }
+
 
 /**
  * Server to represent a Web Thing over HTTP.
@@ -206,7 +231,7 @@ export class WoTHttpServer {
                 'Access-Control-Allow-Headers',
                 'Origin, X-Requested-With, Content-Type, Accept'
             );
-            response.setHeader("Content-Type", "application/td+json");
+            // response.setHeader("Content-Type", "application/td+json");
             response.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, PUT, POST, DELETE');
             if (request.path.split('/').length > 2) {
                 let schema = things.getThing().getSecurityScheme();
@@ -243,27 +268,27 @@ export class WoTHttpServer {
                         break
                     }
                     case 'digest': {
-                        let algorithm ='MD5'
+                        let algorithm = 'MD5'
                         let authInfo: any, hash;
                         if (algorithm == "MD5") {
                             hash = cryptoUsingMD5(credential_digest.realm);
-                        } else  {        
-                        hash = cryptoUsingSHA256(credential_digest.realm);
+                        } else {
+                            hash = cryptoUsingSHA256(credential_digest.realm);
                         }
                         if (!authValue.authorization) {
                             this.authenticateUser(response, hash);
-                            return ;
+                            return;
                         }
                         authInfo = authValue.authorization.replace(/^Digest /, '');
                         authInfo = parseAuthenticationInfo(authInfo);
                         if (authInfo.username !== credential_digest.userName) {
                             this.authenticateUser(response, hash);
-                            return ;
+                            return;
                         }
                         let digestResp = digestAuth(credential_digest, request.method, algorithm, authInfo)
                         if (authInfo.response !== digestResp) {
                             this.authenticateUser(response, hash);
-                            return ;
+                            return;
                         }
                         /*let authInfo: any, hash;
                         let digestAuthObject: any = {};
@@ -364,13 +389,13 @@ export class WoTHttpServer {
             return true
         }
     }
+
     authenticationStatus(resp: express.Response) {
         //resp.writeHead(200, { 'WWW-Authenticate': 'Basic realm="' + realm + '"' });
         resp.json('{Error:Authorization is needed}');
         //resp.end();
 
     };
-
 
     authenticateUser(res: express.Response, hash: string) {
         res.writeHead(401, {
@@ -380,12 +405,12 @@ export class WoTHttpServer {
         res.end('Authorization is needed.');
     }
 
-
     start(): Promise<void> {
         return new Promise((resolve) => {
             this.server.listen({ port: this.port }, resolve);
         });
     }
+// TODO : how to stop for long poll
     stop(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             this.server.close((error) => {
