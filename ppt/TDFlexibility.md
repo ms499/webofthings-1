@@ -111,6 +111,8 @@ In Things Description, Basic has 5 vocabulary terms namely **authorization**, **
 
 - Error response is not done completely. [ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/http-server.ts#L445)
 
+- The example code given to test the OAuth client implemnetation is not working. [ref](https://github.com/eclipse/thingweb.node-wot/issues/873)
+
 ---
 **Suggestions**
 - To distinguish between these server there should be a parameter stating where should the credential be send like the in parameter for other schemes.
