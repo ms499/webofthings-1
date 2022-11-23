@@ -51,10 +51,12 @@ axios.get('https://localhost:8080/mygardenthing', { httpsAgent: agent }).then((r
 
 function readPropertyCall(td, property) {
     let digestResponse = digestAuth(DATA, 'GET', algo, authInfo)
+    
     let header = 'Digest username="' + DATA.username + '", realm="' + DATA.realm + '", nonce="' + authInfo.nonce +
         '", uri="' + authInfo.uri + '", algorithm="' + authInfo.algorithm + '", qop=' + authInfo.qop + ', nc=' + authInfo.nc +
         ', cnonce="' + authInfo.cnonce + '", response="' + digestResponse + '", opaque="' + authInfo.opaque + '"'
-    let url = td.base + td.properties[property].forms[0].href
+    
+        let url = td.base + td.properties[property].forms[0].href
     axios.get(url, { httpsAgent: agent, headers: { 'Authorization': header } }).then((response) => {
         if (response.status === 200) {
             console.log(property + ' Value:', response.data)

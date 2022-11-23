@@ -29,7 +29,8 @@ class Thing {
     this.securityDefinitions = {
       nosec_sc: {
         scheme: 'nosec',
-        in: 'header'
+        in: 'header',
+        name : 'authorization'
       },
     }
     this.security = 'nosec_sc';
@@ -76,6 +77,8 @@ class Thing {
     this.securityDefinitions = definition;
     if (!definition[this.security].hasOwnProperty('in')) {
       this.securityDefinitions[this.security].in = 'header'
+    }if (!definition[this.security].hasOwnProperty('name')) {
+      this.securityDefinitions[this.security].name = 'authorization'
     }
   }
 
@@ -84,6 +87,9 @@ class Thing {
   }
   getSecurityIn() {
     return this.securityDefinitions[this.security].in
+  }
+  getSecurityName() {
+    return this.securityDefinitions[this.security].name
   }
 
 

@@ -10,7 +10,7 @@ The supported security mechanisms
 2. Digest
 3. Bearer token
 4. Api key
-5. OAuth2
+5. OAuth2 (Client credential)
 
 ### Without node-wot client
 1. npm install

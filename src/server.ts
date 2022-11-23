@@ -236,6 +236,7 @@ export class WoTHttpServer {
             response.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, PUT, POST, DELETE');
             if (request.path.split('/').length > 2) {
                 let schema = things.getThing().getSecurityScheme();
+                console.log(things.getThing().getSecurityName())
                 const inValue = things.getThing().getSecurityIn()
                 let authValue
                 switch (inValue) {
@@ -261,9 +262,11 @@ export class WoTHttpServer {
                         break
                     }
                 }
+                console.log('authValue[things.getThing().getSecurityIn()]')
+                console.log(authValue[things.getThing().getSecurityName()])
                 switch (schema) {
                     case 'basic': {
-                        if (!this.basicAuthentication(response, authValue)) {
+                        if (!this.basicAuthentication(response, authValue[things.getThing().getSecurityName()])) {
                             return
                         }
                         break
@@ -316,26 +319,26 @@ export class WoTHttpServer {
                         break;
                     }
                     case 'apikey': {
-                        if (!authValue.apikey) {
-                            this.authenticationStatus(response)
+                        if (!authValue[things.getThing().getSecurityName()]) {
+                            this.authenticationStatus(response, "ApiKey Authentication")
                             return;
                         } else {
-                            let authKey = authValue.apikey;
+                            let authKey = authValue[things.getThing().getSecurityName()];
                             if (apiCredential.apikey !== authKey) {
-                                this.authenticationStatus(response)
+                                this.authenticationStatus(response, "ApiKey Authentication")
                                 return
                             }
                         }
                         break;
                     }
                     case 'bearer': {
-                        if (authValue.authorization === undefined) {
+                        if (authValue[things.getThing().getSecurityName()] === undefined) {
                             response.sendStatus(407)
                             response.json({ 'message': "Authorization is needed" })
                             response.end('');
                             return
                         }
-                        const auth = authValue.authorization.split(" ");
+                        const auth = authValue[things.getThing().getSecurityName()].split(" ");
                         if (auth[0] !== "Bearer" || auth[1] !== bearerCredentials.token) {
                             response.end('Authorization is needed');
                             return
@@ -344,13 +347,13 @@ export class WoTHttpServer {
                         break;
                     }
                     case 'oauth2': {
-                        if (authValue.authorization === undefined) {
+                        if (authValue[things.getThing().getSecurityName()] === undefined) {
                             response.sendStatus(407)
                             response.json({ 'message': "Authorization is needed" })
                             response.end('');
                             return
                         }
-                        const auth = authValue.authorization.split(" ");
+                        const auth = authValue[things.getThing().getSecurityName()].split(" ");
                         verifyTokenUSingOkta(auth[1]).then(response => console.log(response))
                         break;
                     }
@@ -382,24 +385,24 @@ export class WoTHttpServer {
     //Basic Authentication
     basicAuthentication(response: express.Response, authValue: any) {
         //console.log(authValue.authorization)
-        if (!authValue.authorization) {
-            this.authenticationStatus(response)
+        if (!authValue) {
+            this.authenticationStatus(response, "Basic Authentication")
             return false;
         } else {
             let authentication, loginInfo;
-            authentication = authValue.authorization.replace(/^Basic/, '');
+            authentication = authValue.replace(/^Basic/, '');
             authentication = Buffer.from(authentication, 'base64').toString('utf-8');
             loginInfo = authentication.split(':');
             if (loginInfo[0] !== credentials.userName || loginInfo[1] !== credentials.password) {
-                this.authenticationStatus(response)
+                this.authenticationStatus(response, "Basic Authentication")
                 return false
             }
             return true
         }
     }
 
-    authenticationStatus(resp: express.Response) {
-        //resp.writeHead(200, { 'WWW-Authenticate': 'Basic realm="' + realm + '"' });
+    authenticationStatus(resp: express.Response, realm: string) {
+        resp.writeHead(200, { 'WWW-Authenticate': 'Basic realm="'+ realm +'"' });
         resp.json('{Error:Authorization is needed}');
         //resp.end();
 

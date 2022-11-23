@@ -21,7 +21,8 @@ export interface Form {
 
 export interface SecurityScheme {
   scheme: string;
-  in: string
+  in: string;
+  name: string
 }
 
 export interface responseArray {
