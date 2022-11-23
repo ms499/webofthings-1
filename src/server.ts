@@ -13,7 +13,8 @@ import * as https from 'https';
 import Thing from './things';
 import { responseArray } from './types';
 import { cryptoUsingMD5, cryptoUsingSHA256, digestAuth, parseAuthenticationInfo } from './securityScheme/digest';
- 
+import {verifyTokenUSingOkta} from './securityScheme/clientCredential'
+
 var messageBus =require('./eventHandler')
 const fs = require("fs");
 const actionEmitter = require("./actionHandler")
@@ -343,7 +344,14 @@ export class WoTHttpServer {
                         break;
                     }
                     case 'oauth2': {
-
+                        if (authValue.authorization === undefined) {
+                            response.sendStatus(407)
+                            response.json({ 'message': "Authorization is needed" })
+                            response.end('');
+                            return
+                        }
+                        const auth = authValue.authorization.split(" ");
+                        verifyTokenUSingOkta(auth[1]).then(response => console.log(response))
                         break;
                     }
                 }
