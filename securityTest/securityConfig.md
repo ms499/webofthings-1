@@ -46,5 +46,18 @@ This document explains how to configure clients for different security schemes. 
 
 - ### OAuth2 Security
     - This scheme is only implemented for the **Client Credential** grant flow.
-
+    - The function **verifyTokenUsingOkta** and **verifyTokenUSingIntrospect** are two methods in which anyone can be used to verify the token. 
+    
     - The example code is in oauthClientCredential.js
+
+## Steps to Configure the Authorization server
+
+In this code okta is used to create a authorization server. It supports all the 4 grant and based on the requirement user can create any type of server.
+- Create an account on okta https://developer.okta.com/signup/
+- Go to applications --> applications
+- Click on Create App Integration.
+- Select API service for client credentials.
+- Link to follow for stepup https://developer.okta.com/docs/guides/implement-grant-type/clientcreds/main/#set-up-your-app
+- Go to security --> API
+- Click on Add Authorization Server
+- Define the server according to the function required. 

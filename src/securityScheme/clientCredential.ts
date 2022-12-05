@@ -28,7 +28,7 @@ export async function getAccessToken(): Promise<any> {
     }
 }
 
-export async function verifyTokenUSingOkta(access_token: string): Promise<Boolean> {
+export async function verifyTokenUsingOkta(access_token: string): Promise<Boolean> {
     const OktaJwtVerifier = require('@okta/jwt-verifier')
     const oktaJwtVerifier = new OktaJwtVerifier({
         issuer: process.env.ISSUER,
@@ -46,7 +46,7 @@ export async function verifyTokenUSingOkta(access_token: string): Promise<Boolea
     }
 }
 
-export async function verifyTokenUSingIntrospect(access_token: string): Promise<Boolean> {
+export async function verifyTokenUsingIntrospect(access_token: string): Promise<Boolean> {
     const token = btoaVar(`${CLIENT_ID}:${CLIENT_SECRET}`)
     try {
         await request({

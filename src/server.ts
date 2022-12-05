@@ -13,7 +13,7 @@ import * as https from 'https';
 import Thing from './things';
 import { responseArray } from './types';
 import { cryptoUsingMD5, cryptoUsingSHA256, digestAuth, parseAuthenticationInfo } from './securityScheme/digest';
-import {verifyTokenUSingOkta} from './securityScheme/clientCredential'
+import {verifyTokenUsingOkta} from './securityScheme/clientCredential'
 
 var messageBus =require('./eventHandler')
 const fs = require("fs");
@@ -354,7 +354,7 @@ export class WoTHttpServer {
                             return
                         }
                         const auth = authValue[things.getThing().getSecurityName()].split(" ");
-                        verifyTokenUSingOkta(auth[1]).then(response => console.log(response))
+                        verifyTokenUsingOkta(auth[1]).then(response => console.log(response))
                         break;
                     }
                 }
