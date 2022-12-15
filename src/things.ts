@@ -91,6 +91,9 @@ class Thing {
   getSecurityName() {
     return this.securityDefinitions[this.security].name
   }
+  getSecurityParameter() {
+    return this.securityDefinitions[this.security]
+  }
 
 
   /**

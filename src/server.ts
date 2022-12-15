@@ -13,7 +13,7 @@ import * as https from 'https';
 import Thing from './things';
 import { responseArray } from './types';
 import { cryptoUsingMD5, cryptoUsingSHA256, digestAuth, parseAuthenticationInfo } from './securityScheme/digest';
-import {verifyTokenUsingOkta} from './securityScheme/clientCredential'
+import {verifyTokenUSingOkta} from './securityScheme/clientCredential'
 
 var messageBus =require('./eventHandler')
 const fs = require("fs");
@@ -88,6 +88,7 @@ class WoTThingHandler extends BaseHandler {
             res.status(400).end();
             return;
         }
+        console.log(req.socket.remoteAddress)
         const description = thing.getTD();
         description.base = `${req.protocol}://${req.headers.host}${thing.getHref()}`;
         res.json(description);
@@ -353,8 +354,15 @@ export class WoTHttpServer {
                             response.end('');
                             return
                         }
+                        let sec_para = things.getThing().getSecurityParameter()
+                        if (sec_para.authorization!==undefined && sec_para.authorization.length != 0) {
+                            console.log('oauth2 parameter')
+                            console.log(sec_para.authorization)                            
+                        }
                         const auth = authValue[things.getThing().getSecurityName()].split(" ");
-                        verifyTokenUsingOkta(auth[1]).then(response => console.log(response))
+                        if (sec_para.authorization!==undefined && sec_para.flow == 'client') {
+                            verifyTokenUSingOkta(auth[1], sec_para.authorization ).then(response => console.log(response))
+                        }
                         break;
                     }
                 }

@@ -2,11 +2,13 @@
         "title": "mygardenthing",
         "id": "urn:dev:wot:org:eclipse:thingweb:mygardenThings",
         "securityDefinitions":{
-            "basic_sc":{
-                "scheme":"digest"
+            "oauth2_sc":{
+                "scheme":"oauth2",
+                "flow": "client",
+                "authorization":"https://dev-23486491.okta.com/oauth2/aus7cc6uibKmmp8GL5d7"
             }
         },
-        "security":"basic_sc",
+        "security":"oauth2_sc",
         "description": "Automate the gardening water system based on weather prediction, temperature and soil humidity",
         "properties": {
             "temperature": {
