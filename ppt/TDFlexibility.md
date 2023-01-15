@@ -55,7 +55,7 @@ In Things Description, Digest has 3 vocabulary terms namely **qop**, **name** an
 
 ## APISecurityScheme
 
-In Things Description, Basic has 2 vocabulary terms namely **name** and **in**.
+In Things Description, API key has 2 vocabulary terms namely **name** and **in**.
 
 - The term **name:authorization** is hard coded in the code and hence does not offer the flexibility for the application/user to define their own name. [ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/credential.ts#L49)
 
@@ -75,7 +75,7 @@ In Things Description, Basic has 2 vocabulary terms namely **name** and **in**.
 
 ## BearerSecurityScheme
 
-In Things Description, Basic has 5 vocabulary terms namely **authorization**, **algo**, **format**, **name** and **in**.
+In Things Description, Bearer has 5 vocabulary terms namely **authorization**, **algo**, **format**, **name** and **in**.
 
 - The term **name:authorization** is hard coded in the code and hence does not offer the flexibility for the application/user to define their own name. [ref](https://github.com/eclipse/thingweb.node-wot/blob/b174a3b5eceb5b784457c820bce1b8614e53fa7c/packages/binding-http/src/credential.ts#L77)
 
@@ -103,7 +103,7 @@ In Things Description, Basic has 1 vocabulary terms namely **identity**.
 
 ## OAuth2SecurityScheme
 
-In Things Description, Basic has 5 vocabulary terms namely **authorization**, **token**,**refresh**,**scopes** and **flow**.
+In Things Description, OAuth2 has 5 vocabulary terms namely **authorization**, **token**,**refresh**,**scopes** and **flow**.
 
 - Client credential and Resource Owner credential flow is only implemented in node-wot. [ref](https://github.com/eclipse/thingweb.node-wot/tree/master/packages/binding-http#oauth20)
 
